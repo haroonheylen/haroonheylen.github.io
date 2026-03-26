@@ -1,4 +1,4 @@
-# haroonheylen.github.io
+
 
 > Work in progress site for discussing and showcasing my projects. You will also find my Claude generated weekly tech reports here.
 
