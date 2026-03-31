@@ -5,6 +5,7 @@
 ## Weekly Tech Reports:
 - [17 March 2026](https://haroonheylen.github.io/weekly-tech-report-17-mar-2026.html)
 - [26 March 2026](https://haroonheylen.github.io/weekly-tech-report-26-mar-2026.html)
+- [A Taxonomy of Fun: What Makes Games Fun and Compeling](https://haroonheylen.github.io/game-design-fun-taxonomy.html)
 
 -----
 ## License
