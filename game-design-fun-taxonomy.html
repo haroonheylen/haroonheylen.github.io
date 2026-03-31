@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Taxonomy of Fun: What Makes Games Compelling</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1814;
+    --ink-soft: #292620;
+    --ink-muted: #333333;
+    --paper: #fffffe;
+    --paper-warm: #f0f0f0;
+    --accent: #2b7fc0;
+    --accent-soft: #d2d9e8;
+    --rule: #d9d4c8;
+    --code-bg: #d5d5d5a5;
+    --tag-cs: #1a4b6e;
+    --tag-sw: #163950;
+    --tag-hw: #1a4b6e;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { font-size: 18px; scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 1rem;
+    line-height: 1.78;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── MASTHEAD ── */
+  .masthead {
+    background: #151a1f;
+    color: var(--paper);
+    padding: 3.5rem 2rem 2.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .masthead::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 0px;
+    background: repeating-linear-gradient(90deg, var(--accent) 0, var(--accent) 12px, transparent 12px, transparent 18px);
+  }
+  .masthead-eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: #a09880;
+    margin-bottom: 1.2rem;
+  }
+  .masthead h1 {
+    font-family: 'Franklin Gothic Medium', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.6rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: 0.05em;
+    color: #e2e2e2;
+    margin-bottom: 0.8rem;
+  }
+  .masthead h1 span { color: var(--accent); font-style: italic; }
+  .masthead-meta {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    color: #a09880;
+    letter-spacing: 0.1em;
+    border-top: 1px solid #3d3830;
+    padding-top: 1.2rem;
+    margin-top: 1.2rem;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .masthead-meta span::before { content: '// '; color: var(--accent); }
+
+  /* ── NAV ── */
+  .toc-bar {
+    background: var(--paper-warm);
+    border-bottom: 1px solid var(--rule);
+    padding: 0.9rem 2rem;
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(8px);
+  }
+  .toc-bar a {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .toc-bar a:hover { color: var(--accent); }
+  .toc-bar .sep { color: var(--rule); }
+
+  /* ── LAYOUT ── */
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  /* ── SECTION HEADERS ── */
+  .section-header {
+    padding: 2rem 0 2rem 0;
+    margin-top: 2.5rem;
+    margin-bottom: 2rem;
+    border-top: 2px solid var(--ink);
+    border-bottom: 2px solid var(--ink);
+  }
+  .section-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    margin-bottom: 0.5rem;
+  }
+  .section-header h2 {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+  .section-header h2 .num {
+    font-style: italic;
+    color: var(--accent);
+    margin-right: 0.15em;
+  }
+
+  /* ── ARTICLES ── */
+  .article { margin-bottom: 4rem; }
+  .article-header { margin-bottom: 1.5rem; }
+
+  .article-tag {
+    display: inline-block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.2em 0.6em;
+    border-radius: 2px;
+    margin-bottom: 0.7rem;
+    font-weight: 500;
+  }
+  .tag-cs { background: #ddeaf4; color: var(--tag-cs); }
+  .tag-sw { background: #deefd5; color: var(--tag-sw); }
+  .tag-hw { background: #f7e6d8; color: var(--tag-hw); }
+
+  .article h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.35rem, 2.5vw, 1.7rem);
+    font-weight: 620;
+    line-height: 1.3;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.8rem;
+    color: var(--ink);
+  }
+
+  .article-kicker {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--ink-muted);
+    letter-spacing: 0.05em;
+    margin-bottom: 1.2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .article p {
+    margin-bottom: 1.3rem;
+    color: var(--ink-soft);
+  }
+  .article p:last-of-type { margin-bottom: 0; }
+
+  /* ── CODE BLOCKS ── */
+  pre, code {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+  }
+  code {
+    background: var(--code-bg);
+    padding: 0.1em 0.35em;
+    border-radius: 3px;
+    color: var(--tag-hw);
+  }
+  pre {
+    background: #1c1a17;
+    color: #d9d4c0;
+    padding: 1.4rem 1.6rem;
+    border-radius: 4px;
+    overflow-x: auto;
+    margin: 1.8rem 0;
+    line-height: 1.6;
+    border-left: 3px solid var(--accent);
+  }
+  pre code {
+    background: none;
+    color: inherit;
+    padding: 0;
+    font-size: 0.78rem;
+  }
+
+  /* ── TABLES ── */
+  .table-wrap {
+    overflow-x: auto;
+    margin: 2rem 0;
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+  }
+  thead tr {
+    background: #474747;
+    color: var(--paper);
+  }
+  thead th {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.75rem 1rem;
+    text-align: left;
+    font-weight: 500;
+  }
+  tbody tr:nth-child(even) { background: var(--paper-warm); }
+  tbody td {
+    padding: 0.65rem 1rem;
+    border-bottom: 1px solid var(--rule);
+    color: var(--ink-soft);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  .td-mono { font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; }
+
+  /* ── CALLOUT ── */
+  .callout {
+    border-left: 3px solid var(--accent);
+    padding: 1rem 1.5rem;
+    margin: 2rem 0;
+    background: var(--accent-soft);
+    border-radius: 0 4px 4px 0;
+  }
+  .callout p {
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--ink);
+    margin: 0;
+  }
+
+  /* ── STAT GRID ── */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    margin: 2rem 0;
+  }
+  .stat-card {
+    background: #e1e1e1;
+    color: var(--paper);
+    padding: 1.2rem;
+    border-radius: 4px;
+    text-align: center;
+  }
+  .stat-value {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent);
+    display: block;
+    line-height: 1;
+    margin-bottom: 0.4rem;
+  }
+  .stat-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #000000;
+    line-height: 1.3;
+  }
+
+  /* ── FURTHER READING ── */
+  .further-reading {
+    margin-top: 2rem;
+    padding: 1.2rem 1.4rem;
+    background: var(--paper-warm);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+  }
+  .further-reading-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    margin-bottom: 0.7rem;
+  }
+  .further-reading a {
+    display: block;
+    font-size: 0.82rem;
+    color: var(--tag-cs);
+    text-decoration: none;
+    margin-bottom: 0.3rem;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+  .further-reading a:hover { text-decoration: underline; color: var(--accent); }
+  .further-reading a::before { content: '→ '; }
+
+  /* ── DIVIDER ── */
+  .article-divider {
+    height: 1px;
+    background: var(--rule);
+    margin: 3rem 0;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #151a1f;
+    color: #a09880;
+    padding: 2.8rem 2rem;
+    margin-top: 5rem;
+    text-align: center;
+  }
+  footer p {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+  }
+  .footer-author {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 1rem;
+    color: var(--paper);
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+  }
+  .footer-links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin: 2rem 0;
+    flex-wrap: wrap;
+  }
+  .footer-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    color: #c8bfad;
+    text-decoration: none;
+    letter-spacing: 0.06em;
+    border: 1px solid #3b3d30;
+    padding: 0.4em 0.85em;
+    border-radius: 3px;
+    transition: color 0.2s, border-color 0.2s, background 0.2s;
+  }
+  .footer-links a:hover {
+    color: var(--paper);
+    border-color: var(--accent);
+    background: rgba(193, 193, 193, 0.1);
+  }
+  .footer-links svg {
+    width: 15px;
+    height: 15px;
+    fill: currentColor;
+    flex-shrink: 0;
+  }
+  .footer-divider {
+    width: 40px;
+    height: 1px;
+    background: #3d3830;
+    margin: 2rem auto;
+  }
+  .footer-license {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.62rem;
+    color: #6b6358;
+    letter-spacing: 0.08em;
+    line-height: 1.7;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .container { padding: 0 1.2rem; }
+    .toc-bar { gap: 0.8rem; }
+    .stat-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  /* ── PRINT ── */
+  @media print {
+    .toc-bar { display: none; }
+    body { font-size: 10pt; }
+  }
+</style>
+</head>
+<body>
+
+<!-- MASTHEAD -->
+<header class="masthead">
+  <p class="masthead-eyebrow">Game Design Theory &amp; Analysis</p>
+  <h1>A <span>Taxonomy</span> of Fun</h1>
+  <div class="masthead-meta">
+    <span>Game Design</span>
+    <span>Player Psychology</span>
+    <span>Mechanics &amp; Systems</span>
+  </div>
+</header>
+
+<!-- STICKY NAV -->
+<nav class="toc-bar">
+  <a href="#foundations">Foundations of Fun</a>
+  <span class="sep">|</span>
+  <a href="#structure">Structure &amp; Feedback</a>
+  <span class="sep">|</span>
+  <a href="#mastery">Mastery &amp; Expression</a>
+</nav>
+
+<main>
+<div class="container">
+
+<!-- ════════════════════════════════════════════════════════ -->
+<!-- SECTION 1: FOUNDATIONS OF FUN -->
+<!-- ════════════════════════════════════════════════════════ -->
+<section id="foundations">
+  <div class="section-header">
+    <p class="section-label">Part One</p>
+    <h2>Foundations of Fun</h2>
+  </div>
+
+  <!-- Article 1: What Fun Actually Is -->
+  <article class="article">
+    <div class="article-header">
+      <span class="article-tag tag-cs">Player Psychology · Core Theory</span>
+      <h3>Fun Is a Taxonomy, Not a Feeling</h3>
+      <p class="article-kicker">Dopamine is only the entry point — a complete model of engagement requires mapping the full emotional spectrum games can evoke</p>
+    </div>
+
+    <p>The first mistake in game design discourse is treating "fun" as atomic — a single undifferentiated quality a game either has or lacks. It isn't. Fun is a category label applied to a cluster of distinct emotional and cognitive experiences that games can produce, and conflating them leads to design decisions that optimise for one dimension at the cost of all others.</p>
+
+    <p>The most obvious component is pleasure: the immediate, low-latency reward signal. Dopamine is the neurochemical shorthand here, and it's genuinely important. Landing a satisfying combo, hearing a chest open, watching a number go up — these produce a real hedonic response that pulls players back. But a game built entirely around this axis tends toward compulsion rather than engagement. Mobile gacha titles exemplify the pathological endpoint: they are optimised to produce dopamine hits with minimal friction while providing almost nothing else from the taxonomy.</p>
+
+    <p>What the taxonomy also needs to accommodate is achievement — the distinct satisfaction of completing something difficult, which is qualitatively different from moment-to-moment pleasure. And beyond that: frustration, fear, surprise, chaos. These are not design failures to be engineered out. They are legitimate and valuable emotional states that deepen engagement when properly contextualised. A horror game that produces no fear has failed. A puzzle game that produces no frustration has failed differently — because the absence of frustration signals the absence of genuine challenge, and therefore the absence of the achievement that resolves it.</p>
+
+    <div class="callout">
+      <p>The struggle-to-reward arc is not incidental to fun — it is structurally essential. A reward without preceding struggle is noise. The emotional weight of an achievement is proportional to the difficulty of what was overcome to reach it.</p>
+    </div>
+
+    <p>Wonder occupies its own category within the taxonomy: the state produced by exploration, discovery, and learning. This is not the same as pleasure or achievement. A player exploring an unknown coastline in a sailing game may experience something closer to awe than either dopamine or accomplishment — a suspension of goal-directed cognition in favour of absorption in the environment. Play, in the developmental psychology sense, sits here too: experimentation with systems for its own sake, without a specific outcome being sought. These states are fragile and easily displaced by over-structuring. Filling every corner of a world with quest markers and icons is a reliable method for suppressing wonder entirely, because it converts the open act of exploration into a checklist completion task.</p>
+
+    <p>A useful test for whether a mechanic is intrinsically fun: strip away all stimuli — the audio, the visual feedback, the numbers — and evaluate what remains. The underlying mechanic should be engaging on its own terms. Stimuli are amplifiers, not foundations. A mechanic that is only enjoyable because of its audiovisual packaging is fragile in a way that a well-designed core loop is not. This is why certain games become beloved despite dated graphics: the mechanic holds up when the presentation ages, because the mechanic was always the point.</p>
+  </article>
+
+  <div class="article-divider"></div>
+
+  <!-- Article 2: Goals and Wonder -->
+  <article class="article">
+    <div class="article-header">
+      <span class="article-tag tag-cs">Goal Design · Exploration Systems</span>
+      <h3>Clarity of Purpose and the Architecture of Wonder</h3>
+      <p class="article-kicker">Objective design operates on a spectrum from explicit checkbox to open invitation — and the best games use both deliberately</p>
+    </div>
+
+    <p>Players need to know what they are doing and why it matters. This sounds obvious but contains a design spectrum that is frequently misnavigated. At one extreme: the explicit checkbox. A quest log entry reads "Defeat the Bandit Leader (0/1)." The player knows exactly what is required and receives clear confirmation of completion. This is effective for onboarding, for structured narrative beats, and for players who find ambiguity stressful rather than stimulating. The cost is that checkbox objectives suppress the particular pleasure of self-directed discovery — the player is completing your agenda, not pursuing their own curiosity.</p>
+
+    <p>At the other extreme: the open invitation. A mountain is visible in the distance. There is no marker. No quest log entry. No guaranteed reward. But the mountain exists, and it is tall, and something interesting might be at the top. This is a different kind of clarity — not "here is what you must do" but "here is a thing that exists in this world, and you are a person who exists in it too." The objective is implicit in the world's construction rather than explicit in the UI. The player who chooses to climb that mountain is expressing agency in a way that the quest-log player is not.</p>
+
+    <div class="callout">
+      <p>Wonder is produced by the collision between a player's curiosity and a world that has been designed to reward it — not by flooding the screen with icons, but by building an environment where looking behind the waterfall sometimes means finding something remarkable.</p>
+    </div>
+
+    <p>The practical design conclusion is not to choose between these approaches but to use them in layered combination, with awareness of what each accomplishes. Explicit objectives teach systems, mark milestones, and give direction to players who need it. Open-world invitations reward curiosity and produce the wonder state that distinguishes genuinely memorable games from competently executed ones. A game that offers only explicit objectives feels bureaucratic. A game that offers only implicit ones can feel directionless to players who haven't yet developed the confidence to self-direct. The ratio and pacing between them is one of the more consequential craft decisions in open-world design.</p>
+  </article>
+
+</section>
+
+<!-- ════════════════════════════════════════════════════════ -->
+<!-- SECTION 2: STRUCTURE & FEEDBACK -->
+<!-- ════════════════════════════════════════════════════════ -->
+<section id="structure">
+  <div class="section-header">
+    <p class="section-label">Part Two</p>
+    <h2>Structure &amp; Feedback</h2>
+  </div>
+
+  <!-- Article 3: Feedback Loops & Decisions -->
+  <article class="article">
+    <div class="article-header">
+      <span class="article-tag tag-sw">Systems Design · Decision Architecture</span>
+      <h3>Feedback Loops, Consequential Decisions, and the Information Economy of Play</h3>
+      <p class="article-kicker">Immediate and delayed response signals operate at different timescales — and decisions only carry weight when their consequences are legible</p>
+    </div>
+
+    <p>Feedback loops are the mechanism by which games communicate to players that their actions mattered. They operate at two distinct timescales, and both are necessary. Immediate feedback — the hit flash, the sound of a critical strike, the camera shake when a boss staggers — confirms that an action registered and had effect. This operates below the threshold of conscious evaluation; it's perceptual confirmation that the input was received and the system responded. Delayed feedback — the stat increase after winning a battle, the story branch that opens three hours later because of a choice made now — operates at the level of consequence and meaning.</p>
+
+    <p>Games that over-index on immediate feedback at the expense of delayed feedback produce experiences that feel satisfying moment-to-moment but hollow at scale. The player enjoys pressing the button but doesn't care what the button is for. Games that over-index on delayed feedback without sufficient immediate response feel unresponsive and punishing to learn — the player has no signal that what they are doing is correct until much later. The craft is in threading both loops simultaneously: making the button press feel good now, and making the outcome of pressing it well versus poorly matter over a longer horizon.</p>
+
+    <p>Consequential decisions are the second load-bearing element of engagement at the systems level. A decision is consequential when it has a meaningful and legible impact on what follows. In gameplay terms, this means that choosing a playstyle — building around stealth over combat, or selecting a particular weapon class — should produce a meaningfully different experience, not just a cosmetically different one. A skill tree where every path arrives at the same effective power level through different visual verbs is not a decision system; it is a preference survey with no structural stakes.</p>
+
+    <p>In narrative terms, consequential decisions require that a player's response to story events alter what subsequent story events occur or how they are experienced. The important word is "alter" — not "reflect." A system where the player's choices are acknowledged in dialogue but never actually change the trajectory of events is an illusion of consequence rather than the real thing. Players reliably detect this illusion and respond by disengaging from the decision system entirely, treating narrative choices as aesthetic selections rather than meaningful acts.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Decision Type</th>
+            <th>Timescale</th>
+            <th>Legible Impact?</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Weapon / loadout choice</td>
+            <td class="td-mono">Immediate → session-long</td>
+            <td>Yes, if builds diverge meaningfully</td>
+            <td>Devil May Cry 5 — weapon combos alter combat expression entirely</td>
+          </tr>
+          <tr>
+            <td>Narrative response</td>
+            <td class="td-mono">Hours → endgame</td>
+            <td>Yes, if branches genuinely fork</td>
+            <td>Witcher 3 — key choices alter NPC survival and quest availability</td>
+          </tr>
+          <tr>
+            <td>Exploration commitment</td>
+            <td class="td-mono">Immediate → long-term</td>
+            <td>Yes, via intrinsic reward of discovery</td>
+            <td>Breath of the Wild — off-path exploration yields loot, shrines, lore</td>
+          </tr>
+          <tr>
+            <td>Cosmetic preference</td>
+            <td class="td-mono">Persistent</td>
+            <td>Low stakes, but high expression value</td>
+            <td>RPG character creators — no mechanical impact, strong identity signal</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </article>
+
+  <div class="article-divider"></div>
+
+  <!-- Article 4: Difficulty -->
+  <article class="article">
+    <div class="article-header">
+      <span class="article-tag tag-sw">Difficulty Design · Player Retention</span>
+      <h3>The Difficulty Curve: Flow, Variance, and the Problem of Adaptive Matchmaking</h3>
+      <p class="article-kicker">Moderate challenge is the baseline — but a good difficulty curve deliberately breaks its own rules to prevent the plateau of mastery from feeling like stagnation</p>
+    </div>
+
+    <p>The psychologist Mihaly Csikszentmihalyi's flow model describes an optimal engagement state reached when challenge and skill are roughly in balance — too little challenge produces boredom, too much produces anxiety, and the narrow band between them produces absorption. Game designers have been operationalising this model, explicitly or not, for decades. The practical implementation is a difficulty curve: an escalating series of challenges calibrated so that the player is always being stretched but never broken.</p>
+
+    <p>But a perfectly smooth difficulty curve is, paradoxically, a design failure. If challenge escalates at exactly the rate that player skill grows, the subjective experience of difficulty never changes — the player always feels approximately equally challenged, which means they never feel like they are improving. This is the structural problem embedded in skill-based matchmaking systems in competitive games: by constantly pairing players against opponents at their current skill level, the system prevents players from ever experiencing the satisfaction of being clearly better than an opponent they once struggled against. The win rate hovers around 50% permanently. Improvement becomes invisible. Engagement decays.</p>
+
+    <div class="stat-grid">
+      <div class="stat-card">
+        <span class="stat-value">Easy</span>
+        <span class="stat-label">Sprinkled throughout — sustains sense of progress and momentum</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value">Moderate</span>
+        <span class="stat-label">The baseline — calibrated to current skill level, maintains flow</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value">Hard</span>
+        <span class="stat-label">Occasional spike — creates aspiration and incentivises improvement</span>
+      </div>
+    </div>
+
+    <p>The correct design response is deliberate variance. Easy challenges distributed throughout gameplay — below the player's current skill level — serve a critical function: they confirm to the player that they have actually improved, that earlier obstacles are now trivially surmountable. These moments are not padding; they are evidence. Equally important are challenges that are clearly beyond the player's current capability. Xenoblade Chronicles handles this with particular elegance: high-level enemies are placed within regions that lower-level players will explore, visibly present but explicitly unbeatable at the time of first encounter. The player understands that defeating this enemy is not a current task but a future aspiration — something to return to when they have grown strong enough. This creates a specific motivational structure that a smooth difficulty curve cannot: a deferred objective with an emotionally charged payoff when eventually achieved.</p>
+
+    <div class="callout">
+      <p>Skill-based matchmaking illustrates the failure mode precisely: when the system always places you at your exact skill ceiling, you never experience being clearly better than something you once struggled against — so you never feel like you've grown. Variance in difficulty is not noise; it is the signal that growth is happening.</p>
+    </div>
+
+    <p>Failure is the companion to difficulty and requires its own design treatment. The question is not whether failure should be punishing — some punishment is necessary to maintain the stakes of success — but how informative it is. A death that tells the player nothing is waste. A death that clearly communicates which decision or execution error led to the outcome is instruction. The ideal failure state leaves the player not demoralised but reconfigured: they understand something they did not understand before, and that understanding makes the next attempt feel meaningfully different from the previous one. Dark Souls' death-as-curriculum is the canonical example, but the principle generalises across any game where failure is a realistic possibility.</p>
+  </article>
+
+  <div class="article-divider"></div>
+
+  <!-- Article 5: Intrinsic vs Extrinsic -->
+  <article class="article">
+    <div class="article-header">
+      <span class="article-tag tag-sw">Motivation Design · Open World</span>
+      <h3>Intrinsic vs. Extrinsic Incentives: The Breath of the Wild Model</h3>
+      <p class="article-kicker">External rewards are effective teachers — but the most durable engagement is produced when players are driven by their own curiosity rather than the game's instructions</p>
+    </div>
+
+    <p>Extrinsic incentives are rewards delivered by the system in response to specific player actions: complete this quest, receive this item. They are pedagogically necessary — particularly in the onboarding phase, where new players need to learn what the game's systems are, what counts as progress, and what kinds of actions the world rewards. Tutorial sequences and early quest chains are essentially structured extrinsic incentive ladders, guiding players through system discovery at a controlled pace.</p>
+
+    <p>The limitation of extrinsic incentives is that they are exhaustible. Once a player has received the reward, the incentive is spent. A game that relies entirely on extrinsic motivation is therefore in a constant race to generate new rewards before the player's supply runs out. The compulsion loop of many live-service games is an industrialised version of this race — a treadmill of daily quests, battle pass tiers, and limited-time events designed to keep the extrinsic reward stream flowing indefinitely.</p>
+
+    <p>Intrinsic incentives work differently. They are not delivered by the system but generated by the player's own engagement with the world. Curiosity is the most powerful: the player climbs the mountain not because a quest marker points there but because they want to know what is at the top. Discovery is its own reward in a way that a dropped item is not — because the discovery was self-directed, and the chest found by exploration carries a different emotional valence than the chest given by a quest completion screen. Breath of the Wild is the reference implementation for intrinsic design at scale. The player is given clear extrinsic objectives — defeat Ganon, liberate the Divine Beasts — but these objectives impose no ordering and no timeline. Players routinely spend dozens of hours in completely unscripted exploration on the way to these goals, pulled by terrain, curiosity, and the reliable discovery that interesting things tend to be hiding in interesting-looking places.</p>
+
+    <p>The practical design synthesis: use extrinsic incentives to onboard players and establish clear milestone markers; use intrinsic design to fill the space between those markers with self-generated motivation. The extrinsic goals give players a direction; the intrinsic world gives them a reason to take the long route.</p>
+
+    <div class="further-reading">
+      <p class="further-reading-title">Reference Designs</p>
+      <a href="https://www.nintendo.com/us/store/products/the-legend-of-zelda-breath-of-the-wild-switch/">The Legend of Zelda: Breath of the Wild — Nintendo</a>
+      <a href="https://www.xenoblade.com/">Xenoblade Chronicles — Monolith Soft</a>
+      <a href="https://www.devilmaycry.com/">Devil May Cry 5 — Capcom</a>
+    </div>
+  </article>
+
+</section>
+
+<!-- ════════════════════════════════════════════════════════ -->
+<!-- SECTION 3: MASTERY & EXPRESSION -->
+<!-- ════════════════════════════════════════════════════════ -->
+<section id="mastery">
+  <div class="section-header">
+    <p class="section-label">Part Three</p>
+    <h2>Mastery &amp; Expression</h2>
+  </div>
+
+  <!-- Article 6: Skill Floor/Ceiling, Randomness, Expression -->
+  <article class="article">
+    <div class="article-header">
+      <span class="article-tag tag-hw">Skill Architecture · Randomness · Player Identity</span>
+      <h3>Skill Ceilings, Productive Randomness, and the Design of Expressive Systems</h3>
+      <p class="article-kicker">High mastery ceilings require accessible floors — and player expression is the mechanism by which a game becomes personally meaningful rather than generically competent</p>
+    </div>
+
+    <p>Skill ceiling and skill floor are the two endpoints of a game's mastery range, and both require deliberate design attention. The skill floor is the minimum competence required to make meaningful progress — if it is set too high, new players cannot get started and the game fails to acquire an audience. The skill ceiling is the maximum achievable mastery — if it is set too low, experienced players exhaust the game's depth and disengage. A well-designed game maintains a floor accessible enough that novices can make genuine progress while maintaining a ceiling high enough that experienced players have months or years of further mastery to pursue.</p>
+
+    <p>Devil May Cry 5 exemplifies high-ceiling design: the combo system accommodates players who mash buttons and still produces satisfying results (low floor) while rewarding players who invest in understanding weapon synergies, enemy patterns, and style meter optimisation with an entirely different and significantly more expressive experience at the top end. The ceiling is not imposed by difficulty — a skilled player can complete the game without accessing its deepest systems — but by the depth of what those systems contain. This structure naturally incentivises improvement without mandating it.</p>
+
+    <p>Randomness introduces variance into systems that would otherwise be fully deterministic, and it requires a precise calibration to be productive rather than destructive. Good randomness increases the novelty of repeated encounters — if a chest is always behind a waterfall, looking behind waterfalls ceases to be interesting after the second or third one. Occasional chests behind waterfalls maintain the curiosity that drives exploration, because the player can never be certain that this particular waterfall is empty. The signal value of the discovery is preserved by its unpredictability.</p>
+
+    <div class="callout">
+      <p>Bad randomness is randomness that undermines the player's ability to express skill. Super Smash Bros. Brawl's random tripping mechanic — a small percentage chance of falling while dashing — is the standard example: it introduced failure states that were not caused by player error, which is antithetical to the entire premise of a skill-based competitive game.</p>
+    </div>
+
+    <p>Player expression is the mechanism by which a game transcends being an experience that happened to the player and becomes one that the player made. In a fighting game, expression is realised through character selection and playstyle — each character offering a distinct philosophy of combat that attracts players who find it resonant with how they want to engage with conflict. In an RPG, expression operates across a much wider surface: class and skill selection determine mechanical identity; race and background selection establish narrative position; character appearance customisation produces a visual avatar; party composition choices shape strategic options; and narrative decisions allow the player to project their own values and personality onto story events.</p>
+
+    <p>What all of these share is that they give the player authorship over some dimension of the experience. The game is not simply happening to them; they are happening to it. This sense of authorship is one of the most powerful differentiators between games that players remember as significant personal experiences and games they remember as entertainment products they consumed. The distinction is partly in the quality of the expression options offered, but also in how meaningfully the game responds to the choices made — which returns to the consequential decision design discussed earlier. Expression without consequence is costume. Expression with consequence is identity.</p>
+  </article>
+
+  <div class="article-divider"></div>
+
+  <!-- Article 7: Coherency -->
+  <article class="article">
+    <div class="article-header">
+      <span class="article-tag tag-hw">World Design · Systemic Coherency</span>
+      <h3>Coherency: The Rules of the World Must Be Consistent and Logical</h3>
+      <p class="article-kicker">Suspension of disbelief is fragile — a single incoherent system interaction can collapse the player's sense that they are engaging with a real world rather than playing a game</p>
+    </div>
+
+    <p>Every game establishes a set of implicit rules that govern how its world operates. These rules need not be realistic — a fantasy setting can include magic, a physics-bending platformer can include wall-running — but they must be internally consistent. Players are extraordinarily sensitive to violations of the rules they have inferred from play, and when a violation occurs, it breaks the cognitive mode that makes immersion possible. The player stops perceiving themselves as an agent in a world and starts perceiving themselves as a user of a system, which is a fundamentally different and less engaged psychological state.</p>
+
+    <p>The scripted fight problem is a useful case study. A common design shortcut for narratively-mandated encounters where the player must lose or be unable to kill a powerful enemy is to artificially cap the enemy's health at one hit point, making them effectively immortal regardless of how much damage is applied. This is mechanically functional but coherently disastrous: the player who is landing damage, watching the numbers appear, and seeing the enemy fail to die despite those numbers is receiving contradictory information from the system. The world is telling them that their actions are registered and having effect (the numbers), while simultaneously telling them their actions have no effect (the enemy remains at full health). The incoherence is legible and destroys immersion immediately.</p>
+
+    <p>The coherent alternative is not to make the enemy immortal but to make them genuinely overwhelming — to design them as an enemy that a player at this point in the game cannot defeat through any reasonable application of skill or resources. The player loses, but they lose to a force that the world treats consistently. They were not strong enough to win, and the world's rules applied to them as those rules always apply. The narrative outcome is the same; the systemic integrity is preserved; and the player's understanding of why they lost is grounded in the world's logic rather than in an arbitrary scripting decision. This distinction is small in implementation and enormous in how the player experiences the moment.</p>
+
+    <p>Coherency extends beyond individual encounters to the entire fabric of how a game's systems interact. If stealth is an option, it should work in a way consistent with how stealth works throughout the game — not become arbitrarily unavailable when the narrative needs a confrontation. If a character is established as physically capable of a particular feat, they should not fail to perform that feat in a cutscene when the story requires their failure. Each such violation is a seam that reminds the player they are holding a controller rather than inhabiting a world. Minimising those seams — building systems robust enough that the narrative can be served by the systems rather than despite them — is one of the more demanding and rewarding challenges in game design.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Design Principle</th>
+            <th>Good Implementation</th>
+            <th>Common Failure Mode</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Scripted difficulty gates</td>
+            <td>Enemy is genuinely overwhelming at player's current level</td>
+            <td>Enemy HP capped at 1 — system incoherence breaks immersion</td>
+          </tr>
+          <tr>
+            <td>Stealth availability</td>
+            <td>Stealth consistently available per world rules</td>
+            <td>Stealth disabled during specific narrative beats for convenience</td>
+          </tr>
+          <tr>
+            <td>Character capability</td>
+            <td>Cutscene actions match established gameplay abilities</td>
+            <td>Cutscene character fails at task they routinely perform in gameplay</td>
+          </tr>
+          <tr>
+            <td>Randomness scope</td>
+            <td>Variance in outcomes without overriding player skill</td>
+            <td>Random failure states unrelated to player decisions (Brawl tripping)</td>
+          </tr>
+          <tr>
+            <td>World physics</td>
+            <td>Consistent rules applied uniformly throughout</td>
+            <td>Physics exploitable in gameplay but "impossible" in narrative scenes</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>The broader principle underlying coherency is that players extend a remarkable degree of imaginative cooperation to the games they engage with — they are willing to accept talking dragons, magic systems, and physics that would be impossible in the real world, provided those elements are presented consistently and logically within the world's own frame of reference. The implicit contract is: the world has rules; I will learn them; I will engage with them; I expect them to be applied fairly and without exception. Violating that contract is not a minor aesthetic failing. It is a breach of the fundamental agreement that makes immersive play possible.</p>
+  </article>
+
+</section>
+
+</div>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <p class="footer-author">Haroon Heylen</p>
+  <p style="font-family:'IBM Plex Mono',monospace; font-size:0.66rem; color:#a09880; letter-spacing:0.1em;">
+    A Taxonomy of Fun &nbsp;·&nbsp; Game Design Theory &nbsp;·&nbsp; Player Psychology &nbsp;·&nbsp; Systems Design
+  </p>
+
+  <div class="footer-links">
+    <a href="https://github.com/haroonheylen" target="_blank" rel="noopener noreferrer">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="GitHub">
+        <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+      </svg>
+      haroonheylen
+    </a>
+    <a href="https://www.linkedin.com/in/haroonheylen/" target="_blank" rel="noopener noreferrer">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="LinkedIn">
+        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+      </svg>
+      haroonheylen
+    </a>
+  </div>
+
+  <div class="footer-divider"></div>
+
+  <p class="footer-license">
+    MIT License &nbsp;·&nbsp; Copyright © 2026 Haroon Heylen<br>
+    Permission is hereby granted, free of charge, to any person obtaining a copy of this work to use, copy, modify,
+    merge, publish, distribute, sublicense, and/or sell copies, subject to the above copyright notice appearing in all copies.
+  </p>
+</footer>
+
+</body>
+</html>
